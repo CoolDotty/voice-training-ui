@@ -1,0 +1,33 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0.1" y1="0" x2="0.9" y2="1">
+      <stop offset="0" stop-color="#ffd6ea"/>
+      <stop offset="1" stop-color="#d3c4ff"/>
+    </linearGradient>
+    <linearGradient id="petal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffc8df"/>
+      <stop offset="1" stop-color="#ff92be"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a6e0bd"/>
+      <stop offset="1" stop-color="#79c797"/>
+    </linearGradient>
+  </defs>
+  <rect x="16" y="16" width="480" height="480" rx="130" fill="url(#bg)"/>
+  <g transform="translate(0,-6) translate(256,300) scale(1.1) translate(-256,-300)">
+    <!-- stem -->
+    <path d="M256 454 C256 394 256 350 256 302" stroke="url(#leaf)" stroke-width="24" fill="none" stroke-linecap="round"/>
+    <!-- chunky leaves -->
+    <path d="M256 412 C178 408 138 350 142 290 C220 296 260 342 256 412 Z" fill="url(#leaf)"/>
+    <path d="M256 396 C334 392 374 336 370 286 C292 292 252 330 256 396 Z" fill="#8aceA4"/>
+    <!-- plump 3-petal bloom -->
+    <path d="M256 314 C186 314 152 256 152 204 C152 154 196 146 256 206 C316 146 360 154 360 204 C360 256 326 314 256 314 Z" fill="url(#petal)"/>
+    <!-- center petal -->
+    <path d="M256 314 C230 314 204 256 204 194 C204 146 238 146 256 190 C274 146 308 146 308 194 C308 256 282 314 256 314 Z" fill="#ffb6d5"/>
+    <!-- petal seams -->
+    <path d="M206 208 C210 250 230 294 256 310" stroke="#ff89bb" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.45"/>
+    <path d="M306 208 C302 250 282 294 256 310" stroke="#ff89bb" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.45"/>
+    <!-- soft highlight -->
+    <ellipse cx="218" cy="204" rx="15" ry="21" fill="#ffffff" opacity="0.5"/>
+  </g>
+</svg>

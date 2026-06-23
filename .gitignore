@@ -1,0 +1,29 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# design-sync (staged scripts, build output, machine state)
+.ds-sync/
+ds-bundle/
+.design-sync/.cache/
+.design-sync/learnings/
+.design-sync/node_modules
+
+# Node
+node_modules/
+
+# Unrelated local tooling
+.design-sync/
+
+# generated starter package (use make-starter.sh)
+voice-garden-starter.zip
+
+# reference-build audio cache (regenerate via scripts/build_reference_set.py)
+.refcache/

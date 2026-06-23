@@ -1,0 +1,1138 @@
+:root {
+  --pink: #ffb6d5;
+  --pink-soft: #ffd9ea;
+  --pink-bg: #fff0f7;
+  --lav: #c9b6ff;
+  --lav-soft: #e4dbff;
+  --lav-bg: #f5f0ff;
+  --mint: #b8ecd8;
+  --butter: #ffe9a8;
+  --ink: #6b5876;
+  --ink-soft: #9d8ba8;
+  --card: #fffafd;
+  --shadow: 0 8px 24px rgba(186, 142, 196, 0.18);
+  --radius: 22px;
+}
+* {
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  font-family: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN",
+    "Quicksand", system-ui, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(1200px 600px at 15% -5%, var(--pink-soft), transparent 60%),
+    radial-gradient(1100px 700px at 95% 0%, var(--lav-soft), transparent 55%),
+    linear-gradient(160deg, var(--pink-bg), var(--lav-bg));
+  background-attachment: fixed;
+  min-height: 100vh;
+  line-height: 1.5;
+}
+.wrap {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+}
+
+header.hero {
+  text-align: center;
+  margin-bottom: 28px;
+}
+header.hero h1 {
+  font-size: clamp(28px, 5vw, 44px);
+  margin: 0 0 6px;
+  letter-spacing: 0.5px;
+  color: #b06a96;
+  text-shadow: 0 2px 0 #fff;
+}
+header.hero p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.latest-banner {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(10px) saturate(1.1);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+  padding: 9px 20px;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 16px;
+  box-shadow: 0 6px 18px rgba(186, 142, 196, 0.22);
+  font-size: 14px;
+}
+
+section {
+  margin-top: 34px;
+}
+.section-title {
+  font-size: 20px;
+  margin: 0 0 14px;
+  color: #8a6aa8;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---- stat cards (latest take) ---- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+.stat {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow);
+  border: 2px solid #fff;
+}
+.stat .label {
+  font-size: 13px;
+  color: var(--ink-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.stat .value {
+  font-size: 30px;
+  font-weight: 700;
+  color: #b06a96;
+  margin: 2px 0 4px;
+}
+.stat .value small {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-soft);
+}
+.stat .sub {
+  font-size: 12px;
+  color: var(--ink-soft);
+  min-height: 16px;
+}
+
+/* resonance (formant) card */
+.stat.resonance {
+  grid-column: 1 / -1;
+}
+.res-desc {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin: 2px 0 14px;
+}
+.res-desc b {
+  color: #b06a96;
+}
+.fgauge {
+  margin: 14px 0;
+}
+.fgauge.is-clickable {
+  cursor: pointer;
+  border-radius: 14px;
+  padding: 8px 10px;
+  margin: 6px -10px;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+}
+.fgauge.is-clickable:hover,
+.fgauge.is-clickable:focus-visible {
+  background: var(--pink-bg);
+  box-shadow: 0 4px 14px rgba(186, 142, 196, 0.16);
+  outline: none;
+}
+.fgauge-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 13px;
+  gap: 8px;
+}
+.fgauge-head .fname b {
+  color: #7a5a92;
+  font-size: 14px;
+}
+.fgauge-head .fname span {
+  color: var(--ink-soft);
+  font-size: 11.5px;
+}
+.fgauge-head .fval {
+  font-weight: 700;
+  color: #b06a96;
+  white-space: nowrap;
+}
+.fgauge-head .fval .pill {
+  margin-left: 6px;
+}
+.fends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--ink-soft);
+  margin-top: 3px;
+}
+.res-summary {
+  margin-top: 10px;
+  font-size: 13px;
+  background: var(--pink-bg);
+  border-radius: 12px;
+  padding: 11px 13px;
+  color: #7a5a92;
+}
+.res-f1 {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 10px;
+  background: var(--lav-bg);
+  border-radius: 11px;
+  padding: 9px 11px;
+}
+.res-f1 b {
+  color: #7a5a92;
+}
+
+/* zone bar */
+.zonebar {
+  position: relative;
+  height: 12px;
+  border-radius: 8px;
+  margin: 12px 0 6px;
+  overflow: hidden;
+}
+.zonebar .seg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+.zone-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--ink-soft);
+}
+.marker {
+  position: absolute;
+  top: -4px;
+  width: 4px;
+  height: 20px;
+  background: #5a4566;
+  border-radius: 3px;
+  box-shadow: 0 0 0 2px #fff;
+  transform: translateX(-2px);
+}
+.pill {
+  display: inline-block;
+  font-size: 11px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+/* ---- charts ---- */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+.chart-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px 16px 10px;
+  box-shadow: var(--shadow);
+  border: 2px solid #fff;
+}
+.chart-card h3 {
+  margin: 0 0 2px;
+  font-size: 15px;
+  color: #8a6aa8;
+}
+.chart-card .cap {
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin: 0 0 8px;
+}
+
+/* ---- recording cards ---- */
+.rec-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+.rec {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+  border: 2px solid #fff;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.rec .top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.rec .num {
+  background: rgba(255, 255, 255, 0.85);
+  color: #b06a96;
+  border: 2px solid var(--pink);
+  font-weight: 700;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  box-shadow: 0 3px 8px rgba(176, 106, 150, 0.22);
+}
+.rec .label-txt {
+  font-weight: 700;
+  font-size: 16px;
+  color: #855;
+}
+.rec .date {
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.rec .metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  background: var(--lav-bg);
+  border-radius: 12px;
+  padding: 6px 11px;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 78px;
+}
+.chip b {
+  font-size: 15px;
+  color: #7a5a92;
+}
+.chip span {
+  color: var(--ink-soft);
+  font-size: 10px;
+}
+.rec .note {
+  font-size: 13px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+/* ---- themed waveform player (wavesurfer) ---- */
+.player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  padding: 9px 13px;
+  background: var(--lav-bg);
+  border-radius: 16px;
+  transition: box-shadow 0.18s ease, background 0.18s ease;
+}
+.player:hover {
+  background: #f1eaff;
+  box-shadow: 0 6px 18px rgba(186, 142, 196, 0.16);
+}
+.player .wave {
+  cursor: pointer;
+}
+.player .play {
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, var(--pink), var(--lav));
+  box-shadow: 0 3px 8px rgba(176, 106, 150, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s ease;
+}
+.player .play:hover {
+  transform: scale(1.06);
+}
+.player .play:active {
+  transform: scale(0.95);
+}
+.player .wave {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.player .time {
+  flex: 0 0 auto;
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.player .time span {
+  opacity: 0.65;
+}
+.player .vol {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.player .vol input[type="range"] {
+  width: 62px;
+  accent-color: var(--pink);
+  cursor: pointer;
+}
+@media (max-width: 520px) {
+  .player .vol {
+    display: none;
+  }
+}
+.player .dl {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b06a96;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid var(--pink-soft);
+  text-decoration: none;
+  transition: transform 0.12s ease, background 0.12s ease, border-color 0.12s ease;
+}
+.player .dl:hover {
+  background: #fff;
+  border-color: var(--pink);
+  transform: translateY(1px);
+}
+.player .dl:active {
+  transform: scale(0.94);
+}
+
+/* ---- cheat sheet ---- */
+details.cheat {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border: 2px solid #fff;
+  padding: 4px 20px;
+  margin-top: 4px;
+}
+details.cheat summary {
+  cursor: pointer;
+  list-style: none;
+  font-size: 18px;
+  color: #8a6aa8;
+  padding: 12px 0;
+  font-weight: 700;
+  user-select: none;
+}
+details.cheat summary::-webkit-details-marker {
+  display: none;
+}
+details.cheat summary::after {
+  content: " ▾";
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+details.cheat[open] summary::after {
+  content: " ▴";
+}
+.gloss {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 14px;
+  padding: 6px 0 18px;
+}
+.gloss-item {
+  background: var(--lav-bg);
+  border-radius: 16px;
+  padding: 14px;
+}
+.gloss-item h4 {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: #7a5a92;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.gloss-item p {
+  margin: 0 0 6px;
+  font-size: 12.5px;
+  color: var(--ink);
+}
+.gloss-item .guide {
+  font-size: 12px;
+  color: #7a5a92;
+  background: #fff;
+  border-radius: 10px;
+  padding: 6px 9px;
+  margin-bottom: 6px;
+}
+.gloss-item .tip {
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.gloss-note {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-style: italic;
+  background: var(--pink-bg);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+.empty {
+  text-align: center;
+  color: var(--ink-soft);
+  padding: 50px 20px;
+}
+footer {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 12px;
+  margin-top: 50px;
+}
+a.legend-link {
+  color: #b06a96;
+}
+
+/* ---- recording switcher ---- */
+.picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 4px 0 8px;
+}
+.picker .picker-label {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-right: 2px;
+}
+.picker button {
+  font-family: inherit;
+  cursor: pointer;
+  border: 2px solid #fff;
+  background: var(--card);
+  color: var(--ink-soft);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-size: 13px;
+  box-shadow: var(--shadow);
+  transition: color 0.15s, background 0.15s;
+}
+.picker button:hover {
+  color: #b06a96;
+}
+.picker button.active {
+  background: linear-gradient(135deg, var(--pink-soft), var(--lav-soft));
+  color: #b06a96;
+  font-weight: 700;
+}
+
+/* ---- register & phrasing ---- */
+.contour-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px 16px 8px;
+  box-shadow: var(--shadow);
+  border: 2px solid #fff;
+}
+.contour {
+  display: block;
+}
+.posbars {
+  display: flex;
+  gap: 18px;
+  align-items: flex-end;
+  height: 130px;
+  padding: 0 6px;
+}
+.posbar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+.posbar-track {
+  width: 46px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  background: var(--lav-bg);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.posbar-fill {
+  width: 100%;
+  border-radius: 10px 10px 0 0;
+  transition: height 0.4s ease;
+}
+.posbar-val {
+  font-weight: 700;
+  color: #5e7fb8;
+  font-size: 14px;
+  margin-top: 6px;
+}
+.posbar-lbl {
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+/* ---- insights (agent-authored section) ---- */
+.insight {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  box-shadow: var(--shadow);
+  border: 2px solid #fff;
+}
+.insight h3 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  color: #b06a96;
+}
+.insight .insight-sub {
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin: 0 0 16px;
+}
+.insight p {
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.insight .drill {
+  background: var(--lav-bg);
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 13px;
+  margin-top: 10px;
+}
+.insight .drill b {
+  color: #7a5a92;
+}
+.insight-placeholder {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 26px 22px;
+  box-shadow: var(--shadow);
+  border: 2px dashed #e7ddef;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  text-align: center;
+}
+.insight-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0 14px;
+}
+.insight-badge {
+  font-size: 12px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-weight: 700;
+  background: var(--pink-bg);
+  color: #b06a96;
+}
+
+/* ── click-to-expand metric reference modal ──────────────────────────── */
+/* one-line hint introducing the whole compare interaction, once */
+.take-hint {
+  margin: -6px 0 14px;
+  font-size: 12.5px;
+  color: #b06a96;
+  background: var(--pink-bg);
+  border: 1.5px solid #ffe3f0;
+  border-radius: 999px;
+  padding: 6px 14px;
+  display: inline-block;
+  font-weight: 600;
+}
+
+.stat.is-clickable {
+  position: relative;
+  cursor: pointer;
+  /* persistent affordance: a soft tinted edge so clickable cards read
+     differently from the plain "Pitch range" card even without hover */
+  border-color: #ffe3f1;
+  background:
+    linear-gradient(180deg, #fffafd 0%, #fff4fa 100%);
+  transition: transform 0.16s ease, box-shadow 0.16s ease,
+    border-color 0.16s ease;
+}
+.stat.is-clickable:hover,
+.stat.is-clickable:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(186, 142, 196, 0.28);
+  outline: none;
+}
+.stat.is-clickable:focus-visible {
+  border-color: var(--pink);
+}
+
+/* corner magnify glyph — persistent (visible on touch, no hover needed) */
+.stat-expand {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--pink-bg);
+  color: #d784ac;
+  font-size: 0.78em;
+  box-shadow: inset 0 0 0 1.5px #ffdcec;
+  transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+  pointer-events: none;
+}
+/* the value sits near the top-left, so push it clear of the corner glyph */
+.stat.is-clickable .label {
+  padding-right: 30px;
+}
+.stat.is-clickable:hover .stat-expand,
+.stat.is-clickable:focus-visible .stat-expand {
+  background: var(--pink);
+  color: #fff;
+  transform: scale(1.08);
+}
+
+/* tiny "tap to compare" tag at the bottom of clickable cards */
+.stat-tap {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #cf86b0;
+  text-transform: lowercase;
+}
+.stat-tap::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pink);
+}
+
+/* resonance gauges: small magnify glyph in the value row */
+.fgauge-expand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 7px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--pink-bg);
+  color: #d784ac;
+  font-size: 0.72em;
+  box-shadow: inset 0 0 0 1.5px #ffdcec;
+  vertical-align: -0.22em;
+  transition: background 0.16s ease, color 0.16s ease, transform 0.16s ease;
+}
+.fgauge.is-clickable:hover .fgauge-expand,
+.fgauge.is-clickable:focus-visible .fgauge-expand {
+  background: var(--pink);
+  color: #fff;
+  transform: scale(1.08);
+}
+
+.mm-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(120, 96, 138, 0.28);
+  backdrop-filter: blur(6px) saturate(1.1);
+  -webkit-backdrop-filter: blur(6px) saturate(1.1);
+  animation: mm-fade 0.2s ease both;
+}
+@keyframes mm-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.mm-card {
+  position: relative;
+  width: min(640px, 100%);
+  background: var(--card);
+  border-radius: 26px;
+  border: 2px solid #fff;
+  box-shadow: 0 24px 60px rgba(150, 110, 165, 0.34);
+  padding: 26px 28px 22px;
+  transform-origin: var(--ox, 50%) var(--oy, 50%);
+  animation: mm-pop 0.34s cubic-bezier(0.22, 1.2, 0.36, 1) both;
+}
+/* grow up out of the clicked card: scale + fade + lift */
+@keyframes mm-pop {
+  from { opacity: 0; transform: scale(0.86) translateY(14px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.mm-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: var(--pink-bg);
+  color: #b06a96;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.mm-close:hover {
+  background: var(--pink-soft);
+  transform: rotate(90deg);
+}
+
+.mm-head h3 {
+  margin: 0 36px 4px 0;
+  font-size: 19px;
+  color: #b06a96;
+}
+.mm-head p {
+  margin: 0 0 22px;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+
+.mm-scale-wrap {
+  position: relative;
+  margin: 0 6px 8px;
+}
+
+/* her takes sit above the band, refs below — give vertical room */
+.mm-row {
+  position: relative;
+  height: 30px;
+}
+.mm-row-take {
+  height: 34px;
+}
+
+.mm-band-wrap {
+  position: relative;
+  height: 18px;
+}
+.mm-band {
+  position: relative;
+  height: 18px;
+  border-radius: 9px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(150, 110, 165, 0.08);
+}
+.mm-seg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mm-seg-name {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #5a4566;
+  opacity: 0.7;
+  text-transform: lowercase;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* her takes — each is a dot + label pinned at its TRUE horizontal value, bumped
+   up into stacked lanes when too close. A thin dashed guide drops from each dot
+   straight down to the bar so its position is always readable. */
+.mm-takes {
+  position: relative;
+}
+.mm-take {
+  position: absolute;
+  bottom: 0; /* lane offset added inline */
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  /* shift left so the DOT (first child) is centered on the true value */
+  transform: translateX(-6.5px);
+}
+.mm-take.is-active {
+  transform: translateX(-8.5px);
+}
+/* dashed guide: a 2px line whose CENTER aligns with the dot center, dropping
+   straight down to the bar */
+.mm-guide {
+  position: absolute;
+  left: 6.5px;
+  top: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(176, 106, 150, 0.6) 0 3px,
+    transparent 3px 6px
+  );
+  pointer-events: none;
+}
+.mm-take.is-active .mm-guide {
+  left: 8.5px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(224, 122, 176, 0.85) 0 3px,
+    transparent 3px 6px
+  );
+}
+.mm-take-dot {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #b06a96;
+  border: 2.5px solid #fff;
+  box-shadow: 0 2px 6px rgba(150, 110, 165, 0.5);
+  flex: none;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* speaker glyph baked into each playable dot — a persistent "this plays" cue */
+.mm-spk {
+  font-size: 8px;
+  color: #fff;
+  opacity: 0.92;
+}
+.mm-take-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  z-index: 2;
+}
+.mm-take.is-active .mm-take-dot {
+  width: 17px;
+  height: 17px;
+  background: var(--pink);
+  box-shadow: 0 0 0 3px var(--pink-soft), 0 3px 8px rgba(224, 122, 176, 0.55);
+}
+.mm-take.is-active .mm-spk {
+  font-size: 10px;
+}
+.mm-take.is-active .mm-take-label {
+  color: #b06a96;
+  font-size: 12px;
+}
+
+/* reference ticks: smaller pink (fem) / blue (masc) stems below the band,
+   all at a uniform height so they read as a clean row, not a bumpy stagger.
+   Pulled up a touch so the stems slightly overlap the bar's bottom edge. */
+.mm-row-ref {
+  height: 20px;
+  margin-top: -2.5px;
+}
+.mm-ref {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+}
+.mm-ref-stem {
+  display: block;
+  width: 3px;
+  height: 16px;
+  border-radius: 2px;
+}
+.mm-ref-fem .mm-ref-stem {
+  background: #ffb6d5;
+  box-shadow: 0 0 0 1px #fff;
+}
+.mm-ref-masc .mm-ref-stem {
+  background: #bcd3f0;
+  box-shadow: 0 0 0 1px #fff;
+}
+
+.mm-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--ink-soft);
+  margin-top: 4px;
+}
+
+.mm-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed #f0dcea;
+  font-size: 11.5px;
+  color: var(--ink-soft);
+}
+.mm-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.mm-key {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border-radius: 3px;
+}
+.mm-key-take {
+  border-radius: 50%;
+  background: #b06a96;
+}
+.mm-legend-note {
+  font-style: italic;
+}
+
+/* clickable dots / ref ticks + the in-modal player */
+.mm-take.is-clickable,
+.mm-ref.is-clickable {
+  cursor: pointer;
+}
+.mm-take.is-clickable .mm-take-dot {
+  transition: transform 0.14s ease, box-shadow 0.14s ease;
+}
+.mm-take.is-clickable:hover .mm-take-dot {
+  transform: scale(1.18);
+}
+.mm-take.is-playing .mm-take-dot {
+  background: var(--pink);
+  box-shadow: 0 0 0 4px var(--pink-soft), 0 3px 8px rgba(224, 122, 176, 0.6);
+}
+.mm-ref.is-clickable .mm-ref-stem {
+  transition: transform 0.14s ease, filter 0.14s ease;
+}
+.mm-ref.is-clickable:hover .mm-ref-stem,
+.mm-ref.is-clickable:focus-visible .mm-ref-stem {
+  transform: scaleY(1.25);
+  filter: brightness(0.95);
+}
+.mm-ref.is-clickable:focus-visible {
+  outline: none;
+}
+.mm-ref.is-playing .mm-ref-stem {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px rgba(176, 106, 150, 0.5);
+}
+/* tiny speaker badge above a ref tick — hidden until hover / focus / playing so
+   the reference row stays a clean backdrop, but discoverable on interaction.
+   The banner below + the cursor make playability clear before hovering. */
+.mm-ref-spk {
+  position: absolute;
+  left: 50%;
+  top: -13px;
+  transform: translateX(-50%) scale(0.6);
+  transform-origin: center bottom;
+  font-size: 11px;
+  color: #b06a96;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}
+.mm-ref.is-clickable:hover .mm-ref-spk,
+.mm-ref.is-clickable:focus-visible .mm-ref-spk,
+.mm-ref.is-playing .mm-ref-spk {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+.mm-ref-masc .mm-ref-spk {
+  color: #5e7fb8;
+}
+
+/* prominent "click a dot/tick to hear it" banner above the legend */
+.mm-hear {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 9px 14px;
+  background: linear-gradient(180deg, #fff0f7 0%, #fbeeff 100%);
+  border: 1.5px solid #ffe3f0;
+  border-radius: 14px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #b06a96;
+}
+.mm-hear b {
+  color: #a25688;
+}
+.mm-hear-icon {
+  flex: none;
+  font-size: 16px;
+  color: #d784ac;
+}
+
+.mm-player {
+  margin-top: 16px;
+  padding: 12px 14px;
+  background: var(--pink-bg);
+  border-radius: 18px;
+  border: 1.5px solid #ffe3f0;
+  animation: mm-player-in 0.22s ease both;
+}
+@keyframes mm-player-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.mm-player-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.mm-player-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #b06a96;
+}
+.mm-player-close {
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 8px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.mm-player-close:hover {
+  background: var(--pink-soft);
+  color: #b06a96;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mm-backdrop, .mm-card { animation: none; }
+}

@@ -1,0 +1,527 @@
+[
+  {
+    "label": "VCTK p294 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p294 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f294.mp3",
+    "pitch": {
+      "mean_hz": 164.23,
+      "sd_hz": 58.91
+    },
+    "formants": {
+      "f1_hz": 616.22,
+      "f2_hz": 1396.15,
+      "f3_hz": 2706.23
+    },
+    "intensity": {
+      "mean_db": 67.53
+    },
+    "voice_quality": {
+      "hnr_db": 13.01,
+      "jitter_pct": 2.36
+    },
+    "weight": {
+      "h1a3c_db": 5.09
+    }
+  },
+  {
+    "label": "VCTK p297 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p297 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f297.mp3",
+    "pitch": {
+      "mean_hz": 197.73,
+      "sd_hz": 51.67
+    },
+    "formants": {
+      "f1_hz": 535.13,
+      "f2_hz": 1555.4,
+      "f3_hz": 2710.8
+    },
+    "intensity": {
+      "mean_db": 64.95
+    },
+    "voice_quality": {
+      "hnr_db": 10.89,
+      "jitter_pct": 2.1
+    },
+    "weight": {
+      "h1a3c_db": 9.91
+    }
+  },
+  {
+    "label": "VCTK p299 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p299 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f299.mp3",
+    "pitch": {
+      "mean_hz": 175.49,
+      "sd_hz": 23.33
+    },
+    "formants": {
+      "f1_hz": 563.49,
+      "f2_hz": 1337.8,
+      "f3_hz": 2403.05
+    },
+    "intensity": {
+      "mean_db": 64.26
+    },
+    "voice_quality": {
+      "hnr_db": 11.82,
+      "jitter_pct": 1.72
+    },
+    "weight": {
+      "h1a3c_db": 8.51
+    }
+  },
+  {
+    "label": "VCTK p300 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p300 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f300.mp3",
+    "pitch": {
+      "mean_hz": 211.52,
+      "sd_hz": 60.0
+    },
+    "formants": {
+      "f1_hz": 661.09,
+      "f2_hz": 1335.17,
+      "f3_hz": 2410.72
+    },
+    "intensity": {
+      "mean_db": 61.94
+    },
+    "voice_quality": {
+      "hnr_db": 11.27,
+      "jitter_pct": 2.38
+    },
+    "weight": {
+      "h1a3c_db": 8.5
+    }
+  },
+  {
+    "label": "VCTK p301 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p301 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f301.mp3",
+    "pitch": {
+      "mean_hz": 186.47,
+      "sd_hz": 41.84
+    },
+    "formants": {
+      "f1_hz": 584.26,
+      "f2_hz": 1457.79,
+      "f3_hz": 2490.36
+    },
+    "intensity": {
+      "mean_db": 65.22
+    },
+    "voice_quality": {
+      "hnr_db": 13.27,
+      "jitter_pct": 1.51
+    },
+    "weight": {
+      "h1a3c_db": 6.88
+    }
+  },
+  {
+    "label": "VCTK p305 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p305 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f305.mp3",
+    "pitch": {
+      "mean_hz": 235.51,
+      "sd_hz": 18.41
+    },
+    "formants": {
+      "f1_hz": 616.0,
+      "f2_hz": 1396.69,
+      "f3_hz": 3031.84
+    },
+    "intensity": {
+      "mean_db": 65.39
+    },
+    "voice_quality": {
+      "hnr_db": 10.72,
+      "jitter_pct": 1.72
+    },
+    "weight": {
+      "h1a3c_db": 11.68
+    }
+  },
+  {
+    "label": "VCTK p306 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p306 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f306.mp3",
+    "pitch": {
+      "mean_hz": 195.3,
+      "sd_hz": 38.5
+    },
+    "formants": {
+      "f1_hz": 548.8,
+      "f2_hz": 1458.86,
+      "f3_hz": 2870.08
+    },
+    "intensity": {
+      "mean_db": 62.6
+    },
+    "voice_quality": {
+      "hnr_db": 10.74,
+      "jitter_pct": 2.4
+    },
+    "weight": {
+      "h1a3c_db": 10.9
+    }
+  },
+  {
+    "label": "VCTK p308 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p308 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f308.mp3",
+    "pitch": {
+      "mean_hz": 204.37,
+      "sd_hz": 78.69
+    },
+    "formants": {
+      "f1_hz": 612.9,
+      "f2_hz": 1357.45,
+      "f3_hz": 3048.63
+    },
+    "intensity": {
+      "mean_db": 57.08
+    },
+    "voice_quality": {
+      "hnr_db": 9.89,
+      "jitter_pct": 2.48
+    },
+    "weight": {
+      "h1a3c_db": 7.25
+    }
+  },
+  {
+    "label": "VCTK p310 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p310 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f310.mp3",
+    "pitch": {
+      "mean_hz": 301.49,
+      "sd_hz": 43.71
+    },
+    "formants": {
+      "f1_hz": 439.64,
+      "f2_hz": 1489.12,
+      "f3_hz": 2549.86
+    },
+    "intensity": {
+      "mean_db": 63.98
+    },
+    "voice_quality": {
+      "hnr_db": 9.42,
+      "jitter_pct": 1.97
+    },
+    "weight": {
+      "h1a3c_db": 4.96
+    }
+  },
+  {
+    "label": "VCTK p318 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p318 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f318.mp3",
+    "pitch": {
+      "mean_hz": 207.94,
+      "sd_hz": 41.49
+    },
+    "formants": {
+      "f1_hz": 549.6,
+      "f2_hz": 1516.72,
+      "f3_hz": 2802.23
+    },
+    "intensity": {
+      "mean_db": 65.1
+    },
+    "voice_quality": {
+      "hnr_db": 14.01,
+      "jitter_pct": 1.82
+    },
+    "weight": {
+      "h1a3c_db": 11.62
+    }
+  },
+  {
+    "label": "VCTK p329 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p329 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f329.mp3",
+    "pitch": {
+      "mean_hz": 226.36,
+      "sd_hz": 52.55
+    },
+    "formants": {
+      "f1_hz": 573.89,
+      "f2_hz": 1475.27,
+      "f3_hz": 2764.39
+    },
+    "intensity": {
+      "mean_db": 62.45
+    },
+    "voice_quality": {
+      "hnr_db": 12.54,
+      "jitter_pct": 2.31
+    },
+    "weight": {
+      "h1a3c_db": 8.75
+    }
+  },
+  {
+    "label": "VCTK p330 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p330 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f330.mp3",
+    "pitch": {
+      "mean_hz": 196.0,
+      "sd_hz": 28.99
+    },
+    "formants": {
+      "f1_hz": 570.65,
+      "f2_hz": 1556.55,
+      "f3_hz": 2942.07
+    },
+    "intensity": {
+      "mean_db": 59.34
+    },
+    "voice_quality": {
+      "hnr_db": 14.9,
+      "jitter_pct": 1.41
+    },
+    "weight": {
+      "h1a3c_db": 13.65
+    }
+  },
+  {
+    "label": "VCTK p333 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p333 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f333.mp3",
+    "pitch": {
+      "mean_hz": 191.4,
+      "sd_hz": 27.56
+    },
+    "formants": {
+      "f1_hz": 621.41,
+      "f2_hz": 1456.64,
+      "f3_hz": 2987.02
+    },
+    "intensity": {
+      "mean_db": 65.64
+    },
+    "voice_quality": {
+      "hnr_db": 13.06,
+      "jitter_pct": 1.7
+    },
+    "weight": {
+      "h1a3c_db": 8.32
+    }
+  },
+  {
+    "label": "VCTK p339 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p339 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f339.mp3",
+    "pitch": {
+      "mean_hz": 228.94,
+      "sd_hz": 46.39
+    },
+    "formants": {
+      "f1_hz": 680.07,
+      "f2_hz": 1279.9,
+      "f3_hz": 2900.95
+    },
+    "intensity": {
+      "mean_db": 67.68
+    },
+    "voice_quality": {
+      "hnr_db": 13.84,
+      "jitter_pct": 1.65
+    },
+    "weight": {
+      "h1a3c_db": 8.47
+    }
+  },
+  {
+    "label": "VCTK p341 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p341 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f341.mp3",
+    "pitch": {
+      "mean_hz": 190.05,
+      "sd_hz": 34.4
+    },
+    "formants": {
+      "f1_hz": 586.71,
+      "f2_hz": 1505.25,
+      "f3_hz": 2710.78
+    },
+    "intensity": {
+      "mean_db": 66.7
+    },
+    "voice_quality": {
+      "hnr_db": 14.88,
+      "jitter_pct": 2.09
+    },
+    "weight": {
+      "h1a3c_db": 6.16
+    }
+  },
+  {
+    "label": "VCTK p361 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p361 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f361.mp3",
+    "pitch": {
+      "mean_hz": 203.67,
+      "sd_hz": 53.41
+    },
+    "formants": {
+      "f1_hz": 626.13,
+      "f2_hz": 1422.26,
+      "f3_hz": 2836.15
+    },
+    "intensity": {
+      "mean_db": 62.26
+    },
+    "voice_quality": {
+      "hnr_db": 11.11,
+      "jitter_pct": 2.95
+    },
+    "weight": {
+      "h1a3c_db": 10.63
+    }
+  },
+  {
+    "label": "VCTK p362 (American)",
+    "gender": "f",
+    "source": "VCTK 0.92 speaker p362 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_f362.mp3",
+    "pitch": {
+      "mean_hz": 212.94,
+      "sd_hz": 39.36
+    },
+    "formants": {
+      "f1_hz": 396.62,
+      "f2_hz": 1645.56,
+      "f3_hz": 2450.25
+    },
+    "intensity": {
+      "mean_db": 59.91
+    },
+    "voice_quality": {
+      "hnr_db": 15.68,
+      "jitter_pct": 2.0
+    },
+    "weight": {
+      "h1a3c_db": 12.82
+    }
+  },
+  {
+    "label": "VCTK p311 (American)",
+    "gender": "m",
+    "source": "VCTK 0.92 speaker p311 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_m311.mp3",
+    "pitch": {
+      "mean_hz": 113.12,
+      "sd_hz": 64.49
+    },
+    "formants": {
+      "f1_hz": 481.26,
+      "f2_hz": 1234.27,
+      "f3_hz": 2365.22
+    },
+    "intensity": {
+      "mean_db": 63.53
+    },
+    "voice_quality": {
+      "hnr_db": 9.83,
+      "jitter_pct": 2.83
+    },
+    "weight": {
+      "h1a3c_db": 11.86
+    }
+  },
+  {
+    "label": "VCTK p334 (American)",
+    "gender": "m",
+    "source": "VCTK 0.92 speaker p334 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_m334.mp3",
+    "pitch": {
+      "mean_hz": 115.9,
+      "sd_hz": 58.38
+    },
+    "formants": {
+      "f1_hz": 516.09,
+      "f2_hz": 1264.13,
+      "f3_hz": 2570.65
+    },
+    "intensity": {
+      "mean_db": 61.64
+    },
+    "voice_quality": {
+      "hnr_db": 8.96,
+      "jitter_pct": 3.33
+    },
+    "weight": {
+      "h1a3c_db": 6.53
+    }
+  },
+  {
+    "label": "VCTK p345 (American)",
+    "gender": "m",
+    "source": "VCTK 0.92 speaker p345 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_m345.mp3",
+    "pitch": {
+      "mean_hz": 99.91,
+      "sd_hz": 28.03
+    },
+    "formants": {
+      "f1_hz": 487.87,
+      "f2_hz": 1299.95,
+      "f3_hz": 2460.27
+    },
+    "intensity": {
+      "mean_db": 65.48
+    },
+    "voice_quality": {
+      "hnr_db": 11.26,
+      "jitter_pct": 2.62
+    },
+    "weight": {
+      "h1a3c_db": 15.41
+    }
+  },
+  {
+    "label": "VCTK p360 (American)",
+    "gender": "m",
+    "source": "VCTK 0.92 speaker p360 (American accent) \u2014 https://datashare.ed.ac.uk/handle/10283/3443",
+    "audio": "reference-audio/vctk_m360.mp3",
+    "pitch": {
+      "mean_hz": 101.17,
+      "sd_hz": 12.57
+    },
+    "formants": {
+      "f1_hz": 410.8,
+      "f2_hz": 1325.17,
+      "f3_hz": 2694.84
+    },
+    "intensity": {
+      "mean_db": 64.4
+    },
+    "voice_quality": {
+      "hnr_db": 9.27,
+      "jitter_pct": 2.91
+    },
+    "weight": {
+      "h1a3c_db": 16.25
+    }
+  }
+]
