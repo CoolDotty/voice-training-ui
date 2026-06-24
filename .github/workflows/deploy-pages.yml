@@ -1,0 +1,50 @@
+name: Publish frontend to gh-pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: dashboard-react/package-lock.json
+
+      - name: Install dependencies
+        working-directory: dashboard-react
+        run: npm ci
+
+      - name: Build
+        working-directory: dashboard-react
+        run: npm run build
+
+      - name: Add Pages metadata
+        run: |
+          touch dashboard-react/dist/.nojekyll
+          printf "voicegarden.x3c.ca\n" > dashboard-react/dist/CNAME
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: dashboard-react/dist
+          force_orphan: true

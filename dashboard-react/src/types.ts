@@ -54,7 +54,11 @@ export interface Recording {
   date: string;
   source_file: string;
   audio: string | null;
+  // Browser-only recordings can live in IndexedDB instead of public/audio.
+  audioBlobId?: string;
   detail?: string; // path (relative to public/) to the heavy analysis JSON
+  detailId?: string; // IndexedDB key for browser-generated RecordingDetail
+  isLocal?: boolean;
   duration_s: number | null;
   pitch: Pitch;
   formants: Formants;
@@ -99,4 +103,17 @@ export interface RecordingDetail {
   frames: { t: number[]; hz: (number | null)[] };
   phrases: Phrase[];
   summary: Register;
+}
+
+// Browser-generated insight data. This replaces per-recording TSX authoring for
+// the self-serve path while preserving the current rendered insight concepts.
+export interface Insight {
+  recordingId: number;
+  headline: string;
+  summary: string;
+  badges: string[];
+  primaryIssue: string;
+  recommendedDrill: string;
+  createdAt: string;
+  editedText?: string;
 }

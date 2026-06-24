@@ -16,6 +16,29 @@ Open your coding agent of choice and ask it to read CLAUDE.md. It will give you 
 
 If you don't know what a coding agent is or how to do this, DM me. I will see about packaging it for you in an easier format, but it will be less useful as I will have to remove the AI features.
 
+## Browser-only analysis spike
+
+There is an experimental `praat-wasm/` package that defines the browser-side
+analysis boundary for a headless Praat WebAssembly build. It includes a
+JavaScript PCM fallback analyzer plus a real Praat WASM wrapper for mono PCM to
+`Sound_to_Pitch`, exposed through the same worker/result shape the dashboard can
+consume.
+
+```sh
+cd praat-wasm
+npm run fetch:praat
+npm run build:praat-libs -- --jobs=2
+npm run build:wasm
+npm test
+npm run smoke:wasm
+npm run smoke:browser
+npm run bench -- 30
+```
+
+Generated Praat source, Emscripten SDK files, and WASM artifacts live under
+ignored `praat-wasm/vendor/` and `praat-wasm/dist/` paths. See
+`praat-wasm/PORTING.md` for the C++/Emscripten path and remaining parity work.
+
 ## License
 
 All code and content I wrote — `analyze.py`, the React dashboard, the Claude Code skill, and the docs — is licensed under the **MIT License** (see `LICENSE`).

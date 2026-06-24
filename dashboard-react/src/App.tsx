@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { Recording, ReferenceVoice } from "./types";
 import {
   PITCH_ZONES,
@@ -16,9 +16,15 @@ import { MetricModal } from "./components/MetricModal";
 import { METRICS, type MetricKey } from "./metrics";
 import { ResonanceCard } from "./components/ResonanceCard";
 import { LineChart, type Point, type ChartBand } from "./components/LineChart";
-import { RecordingCard } from "./components/RecordingCard";
 import { CheatSheet } from "./components/CheatSheet";
 import { RegisterSection } from "./components/RegisterSection";
+import { RecordingPanel } from "./components/RecordingPanel";
+import { RecordingHistory } from "./components/RecordingHistory";
+import {
+  deleteLocalRecording,
+  getLocalRecordings,
+  updateLocalRecordingMetadata,
+} from "./services/recordingStore";
 import {
   AnnotationsProvider,
   Note,
@@ -31,31 +37,55 @@ import {
   ContourIcon,
   InsightIcon,
   TrendsIcon,
-  CardsIcon,
   BulbIcon,
 } from "./components/icons";
+
+type AppPage = "record" | "detail" | "history";
 
 export function App() {
   const [recordings, setRecordings] = useState<Recording[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [page, setPage] = useState<AppPage>("record");
   const [references, setReferences] = useState<ReferenceVoice[]>([]);
   // which metric's reference modal is open + the card rect it grew from
   const [modal, setModal] = useState<{ key: MetricKey; rect: DOMRect } | null>(
     null,
   );
 
-  useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}recordings.json?t=${Date.now()}`)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
-      .then((data: Recording[]) =>
-        setRecordings([...data].sort((a, b) => a.id - b.id)),
+  const loadRecordings = useCallback(async (selectId?: number | null) => {
+    try {
+      const staticRecordings = await fetch(
+        `${import.meta.env.BASE_URL}recordings.json?t=${Date.now()}`,
       )
-      .catch((e) => setError(String(e)));
+        .then((res) => {
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        })
+        .then((data: Recording[]) =>
+          Array.isArray(data) ? data.map((r) => ({ ...r, isLocal: false })) : [],
+        );
+      const localRecordings = await getLocalRecordings();
+      const merged = [...staticRecordings, ...localRecordings].sort(
+        (a, b) => a.id - b.id,
+      );
+      setRecordings(merged);
+      if (selectId !== undefined) setSelectedId(selectId);
+      setError(null);
+    } catch (e) {
+      setError(String(e));
+      try {
+        const localRecordings = await getLocalRecordings();
+        setRecordings(localRecordings);
+      } catch {
+        setRecordings([]);
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    void loadRecordings();
+  }, [loadRecordings]);
 
   // reference voices (real men/women) — degrade gracefully if missing.
   useEffect(() => {
@@ -71,6 +101,7 @@ export function App() {
 
   const R = recordings ?? [];
   const latest = R.length ? R[R.length - 1] : null;
+  const nextRecordingId = R.reduce((max, r) => Math.max(max, r.id), 0) + 1;
   // the recording currently in focus (defaults to the latest)
   const active =
     (selectedId != null ? R.find((r) => r.id === selectedId) : null) ?? latest;
@@ -79,6 +110,55 @@ export function App() {
 
   const mk = (sel: (r: Recording) => number | null): Point[] =>
     R.map((r) => ({ label: r.id, y: sel(r) }));
+
+  const handleSavedRecording = useCallback(
+    (recording: Recording) => {
+      setSelectedId(recording.id);
+      setPage("detail");
+      void loadRecordings(recording.id);
+    },
+    [loadRecordings],
+  );
+
+  const handleOpenRecording = useCallback((id: number) => {
+    setSelectedId(id);
+    setPage("detail");
+  }, []);
+
+  const handleDeleteLocal = useCallback(
+    async (recording: Recording) => {
+      if (!recording.isLocal) return;
+      const confirmed = window.confirm(`Delete local take #${recording.id}?`);
+      if (!confirmed) return;
+      try {
+        await deleteLocalRecording(recording);
+        await loadRecordings(selectedId === recording.id ? null : selectedId);
+      } catch (e) {
+        setError(`Couldn't delete local recording: ${String(e)}`);
+      }
+    },
+    [loadRecordings, selectedId],
+  );
+
+  const handleEditLocal = useCallback(
+    async (recording: Recording) => {
+      if (!recording.isLocal) return;
+      const nextLabel = window.prompt("Label", recording.label);
+      if (nextLabel == null) return;
+      const nextNote = window.prompt("Note", recording.note);
+      if (nextNote == null) return;
+      try {
+        await updateLocalRecordingMetadata(recording.id, {
+          label: nextLabel.trim() || recording.label,
+          note: nextNote.trim(),
+        });
+        await loadRecordings(recording.id);
+      } catch (e) {
+        setError(`Couldn't edit local recording: ${String(e)}`);
+      }
+    },
+    [loadRecordings],
+  );
 
   return (
     <div className="wrap">
@@ -103,24 +183,69 @@ export function App() {
         </div>
       )}
 
-      {/* recording switcher */}
-      {R.length > 1 && (
-        <div className="picker">
-          <span className="picker-label">viewing:</span>
-          {[...R].reverse().map((r) => (
-            <button
-              key={r.id}
-              className={active && r.id === active.id ? "active" : ""}
-              onClick={() => setSelectedId(r.id)}
-            >
-              #{r.id} · {r.label}
-              {latest && r.id === latest.id ? " 🌟" : ""}
-            </button>
-          ))}
-        </div>
-      )}
+      <AppNavigation
+        page={page}
+        active={active}
+        recordingCount={R.length}
+        onNavigate={setPage}
+      />
 
-      {active && (
+      <main className="app-page">
+        {page === "record" && (
+          <section className="page-shell" aria-labelledby="record-page-title">
+            <div className="page-head">
+              <span className="page-kicker">New take</span>
+              <h2 id="record-page-title">Record practice audio</h2>
+              <p>
+                Choose the exercise, set the register floor, record, review, and
+                save the take for analysis.
+              </p>
+            </div>
+            <RecordingPanel
+              nextId={nextRecordingId}
+              onSaved={handleSavedRecording}
+            />
+          </section>
+        )}
+
+        {page === "history" && (
+          <section className="page-shell" aria-labelledby="history-page-title">
+            <div className="page-head">
+              <span className="page-kicker">Library</span>
+              <h2 id="history-page-title">Recordings history</h2>
+              <p>
+                Search, compare, edit local takes, and open a recording when you
+                want to inspect its analysis.
+              </p>
+            </div>
+            <RecordingHistory
+              recordings={R}
+              activeId={active?.id ?? null}
+              latestId={latest?.id ?? null}
+              onSelect={handleOpenRecording}
+              onDelete={handleDeleteLocal}
+              onEdit={handleEditLocal}
+            />
+          </section>
+        )}
+
+        {page === "detail" && !active && (
+          <section className="page-shell">
+            <div className="empty detail-empty">
+              No recording selected yet.
+              <div className="empty-actions">
+                <button type="button" onClick={() => setPage("history")}>
+                  Browse history
+                </button>
+                <button type="button" onClick={() => setPage("record")}>
+                  Record a take
+                </button>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {page === "detail" && active && (
         <AnnotationsProvider recording={active}>
           <Region id="region.top" />
 
@@ -297,6 +422,7 @@ export function App() {
       )}
 
       {/* 📈 Trends over time (across all recordings) */}
+      {page === "history" && (
       <section>
         <h2 className="section-title">
           <TrendsIcon /> Trends over time
@@ -347,41 +473,19 @@ export function App() {
           />
         </div>
       </section>
-
-      {/* 📖 All recordings */}
-      <section>
-        <h2 className="section-title">
-          <CardsIcon /> All recordings
-        </h2>
-        <div className="rec-grid">
-          {R.length === 0 ? (
-            <div className="empty">
-              no recordings yet 🌸
-              <br />
-              run the analyzer to plant your first one!
-            </div>
-          ) : (
-            [...R].reverse().map((r) => (
-              <div
-                key={r.id}
-                onClick={() => setSelectedId(r.id)}
-                style={{ cursor: "pointer" }}
-                title="click to view this take above"
-              >
-                <RecordingCard r={r} />
-              </div>
-            ))
-          )}
-        </div>
-      </section>
+      )}
 
       {/* 💡 Cheat sheet */}
+      {page === "detail" && (
       <section>
         <h2 className="section-title">
           <BulbIcon /> What do these mean?
         </h2>
         <CheatSheet />
       </section>
+      )}
+
+      </main>
 
       <footer>
         made with 🩷 &middot; numbers are a compass, not a judge &middot; your ears
@@ -399,6 +503,49 @@ export function App() {
         />
       )}
     </div>
+  );
+}
+
+function AppNavigation({
+  page,
+  active,
+  recordingCount,
+  onNavigate,
+}: {
+  page: AppPage;
+  active: Recording | null;
+  recordingCount: number;
+  onNavigate: (page: AppPage) => void;
+}) {
+  const items: Array<{ id: AppPage; label: string; meta: string }> = [
+    { id: "record", label: "Record", meta: "New take" },
+    {
+      id: "detail",
+      label: "Detail",
+      meta: active ? `#${active.id}` : "No take",
+    },
+    {
+      id: "history",
+      label: "History",
+      meta: `${recordingCount} saved`,
+    },
+  ];
+
+  return (
+    <nav className="app-nav" aria-label="Main sections">
+      {items.map((item) => (
+        <button
+          key={item.id}
+          type="button"
+          className={page === item.id ? "is-active" : ""}
+          aria-current={page === item.id ? "page" : undefined}
+          onClick={() => onNavigate(item.id)}
+        >
+          <span>{item.label}</span>
+          <small>{item.meta}</small>
+        </button>
+      ))}
+    </nav>
   );
 }
 

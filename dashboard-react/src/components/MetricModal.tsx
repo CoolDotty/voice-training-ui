@@ -23,7 +23,8 @@ interface Tick {
   active: boolean;
   lane: number; // vertical row for stacked take/ref markers
   key: string; // unique id for playback selection
-  audio?: string; // playable clip path, if any
+  audio?: string; // playable public clip path, if any
+  audioBlobId?: string; // playable local clip key, if any
   playTitle: string; // label shown above the player when this clip plays
   downloadName: string;
 }
@@ -31,7 +32,8 @@ interface Tick {
 // what's currently selected for playback in the modal
 interface Selected {
   key: string;
-  audio: string;
+  audio?: string;
+  audioBlobId?: string;
   title: string;
   downloadName: string;
 }
@@ -80,13 +82,14 @@ export function MetricModal({
   const [selected, setSelected] = useState<Selected | null>(null);
 
   const play = (t: Tick) => {
-    if (!t.audio) return;
+    if (!t.audio && !t.audioBlobId) return;
     setSelected((cur) =>
       cur?.key === t.key
         ? null // click the same one again → close the player
         : {
             key: t.key,
-            audio: t.audio!,
+            audio: t.audio,
+            audioBlobId: t.audioBlobId,
             title: t.playTitle,
             downloadName: t.downloadName,
           },
@@ -141,6 +144,7 @@ export function MetricModal({
         lane: 0,
         key: `take-${r.id}`,
         audio: r.audio ?? undefined,
+        audioBlobId: r.audioBlobId,
         playTitle: `take #${r.id} — ${r.label}`,
         downloadName: `voice-take-${r.id}`,
       };
@@ -213,17 +217,17 @@ export function MetricModal({
               <div
                 key={`t${i}`}
                 className={`mm-take${t.active ? " is-active" : ""}${
-                  t.audio ? " is-clickable" : ""
+                  t.audio || t.audioBlobId ? " is-clickable" : ""
                 }${selected?.key === t.key ? " is-playing" : ""}`}
                 style={{
                   left: `${t.pct}%`,
                   bottom: TAKE_GAP + t.lane * TAKE_ROW,
                 }}
-                onClick={t.audio ? () => play(t) : undefined}
-                role={t.audio ? "button" : undefined}
-                tabIndex={t.audio ? 0 : undefined}
+                onClick={t.audio || t.audioBlobId ? () => play(t) : undefined}
+                role={t.audio || t.audioBlobId ? "button" : undefined}
+                tabIndex={t.audio || t.audioBlobId ? 0 : undefined}
                 onKeyDown={
-                  t.audio
+                  t.audio || t.audioBlobId
                     ? (e) => {
                         if (e.key === "Enter" || e.key === " ") {
                           e.preventDefault();
@@ -233,7 +237,7 @@ export function MetricModal({
                     : undefined
                 }
                 aria-label={
-                  t.audio
+                  t.audio || t.audioBlobId
                     ? `Play take ${t.label}${
                         selected?.key === t.key ? " (now playing)" : ""
                       }`
@@ -241,7 +245,9 @@ export function MetricModal({
                 }
                 title={`take ${t.label} · ${fmt(
                   Math.round(t.v * 10) / 10,
-                )}${metric.unit}${t.audio ? " · 🔊 click to hear it" : ""}`}
+                )}${metric.unit}${
+                  t.audio || t.audioBlobId ? " · 🔊 click to hear it" : ""
+                }`}
               >
                 {/* dashed guide from this dot straight down to the bar */}
                 <span
@@ -249,7 +255,7 @@ export function MetricModal({
                   style={{ height: TAKE_GAP + t.lane * TAKE_ROW + DOT_R }}
                 />
                 <span className="mm-take-dot">
-                  {t.audio && (
+                  {(t.audio || t.audioBlobId) && (
                     <FiVolume2 className="mm-spk" aria-hidden="true" />
                   )}
                 </span>
@@ -352,7 +358,9 @@ export function MetricModal({
             <WaveformPlayer
               key={selected.key}
               src={selected.audio}
+              audioBlobId={selected.audioBlobId}
               downloadName={selected.downloadName}
+              autoPlay
             />
           </div>
         )}

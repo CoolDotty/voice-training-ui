@@ -7,6 +7,9 @@ import {
 } from "react";
 import type { Recording, RecordingDetail } from "../types";
 import type { RecordingAnnotations } from "./types";
+import type { Insight } from "../types";
+import { getInsight, getRecordingDetail } from "../services/recordingStore";
+import { Drill, InsightCard } from "./lib";
 
 // Auto-discovery: one file per recording at entries/<NNN>.tsx (zero-padded id),
 // default-exporting a RecordingAnnotations. Vite resolves this glob and HMR
@@ -26,6 +29,7 @@ interface Ctx {
   recording: Recording;
   detail: RecordingDetail | null;
   ann: RecordingAnnotations | null;
+  insight: Insight | null;
 }
 const AnnCtx = createContext<Ctx | null>(null);
 
@@ -54,8 +58,20 @@ export function AnnotationsProvider({
 }) {
   const [detail, setDetail] = useState<RecordingDetail | null>(initialDetail);
   const [ann, setAnn] = useState<RecordingAnnotations | null>(initialAnn);
+  const [insight, setInsight] = useState<Insight | null>(null);
 
   useEffect(() => {
+    if (recording.detailId) {
+      setDetail(null);
+      let alive = true;
+      getRecordingDetail(recording.detailId)
+        .then((d) => alive && setDetail(d))
+        .catch(() => alive && setDetail(null));
+      return () => {
+        alive = false;
+      };
+    }
+
     // No detail to fetch (or none configured): fall back to the injected
     // value (null in the app — clears any stale detail; non-null only when a
     // caller pre-loaded it, e.g. a static preview).
@@ -72,7 +88,22 @@ export function AnnotationsProvider({
     return () => {
       alive = false;
     };
-  }, [recording.detail, initialDetail]);
+  }, [recording.detail, recording.detailId, initialDetail]);
+
+  useEffect(() => {
+    if (!recording.isLocal) {
+      setInsight(null);
+      return;
+    }
+
+    let alive = true;
+    getInsight(recording.id)
+      .then((i) => alive && setInsight(i))
+      .catch(() => alive && setInsight(null));
+    return () => {
+      alive = false;
+    };
+  }, [recording.id, recording.isLocal]);
 
   useEffect(() => {
     const key = `./entries/${String(recording.id).padStart(3, "0")}.tsx`;
@@ -95,7 +126,7 @@ export function AnnotationsProvider({
   }, [recording.id, initialAnn]);
 
   return (
-    <AnnCtx.Provider value={{ recording, detail, ann }}>
+    <AnnCtx.Provider value={{ recording, detail, ann, insight }}>
       {children}
     </AnnCtx.Provider>
   );
@@ -113,7 +144,23 @@ export function Note({ id, children }: { id: string; children?: ReactNode }) {
 // Insertion slot: renders the agent's content for `id` if present, else `empty`
 // (nothing by default). For freeform cards/callouts the agent can drop anywhere.
 export function Region({ id, empty = null }: { id: string; empty?: ReactNode }) {
-  const { ann, recording, detail } = useAnnotations();
+  const { ann, recording, detail, insight } = useAnnotations();
   const fn = ann?.slots?.[id];
+  if (!fn && id === "region.insights" && insight) {
+    return <RuleInsight insight={insight} />;
+  }
   return <>{fn ? fn({ recording, detail }) : empty}</>;
+}
+
+function RuleInsight({ insight }: { insight: Insight }) {
+  return (
+    <InsightCard
+      title={insight.headline}
+      subtitle={insight.primaryIssue}
+      badges={insight.badges}
+    >
+      <p>{insight.editedText || insight.summary}</p>
+      <Drill title="Try this next">{insight.recommendedDrill}</Drill>
+    </InsightCard>
+  );
 }

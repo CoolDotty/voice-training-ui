@@ -2,54 +2,109 @@ import type { Recording } from "../types";
 import { fmt } from "../zones";
 import { WaveformPlayer } from "./WaveformPlayer";
 
-export function RecordingCard({ r }: { r: Recording }) {
+export function RecordingCard({
+  r,
+  selected = false,
+  isLatest = false,
+  onSelect,
+  onDelete,
+  onEdit,
+}: {
+  r: Recording;
+  selected?: boolean;
+  isLatest?: boolean;
+  onSelect?: (recording: Recording) => void;
+  onDelete?: (recording: Recording) => void;
+  onEdit?: (recording: Recording) => void;
+}) {
   return (
-    <div className="rec">
+    <article className={`rec${selected ? " is-selected" : ""}`} aria-current={selected ? "true" : undefined}>
       <div className="top">
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        <div className="rec-title">
           <span className="num">{r.id}</span>
-          <span className="label-txt">{r.label}</span>
+          <div>
+            <div className="rec-name-row">
+              <span className="label-txt">{r.label}</span>
+              {selected && <span className="rec-badge rec-badge-current">Current</span>}
+              {isLatest && <span className="rec-badge">Latest</span>}
+              {r.isLocal && <span className="rec-badge rec-badge-local">Browser</span>}
+            </div>
+            <span className="date">
+              {r.date} - {fmt(r.duration_s, "s")}
+              {!r.isLocal ? " - file" : ""}
+            </span>
+          </div>
         </div>
-        <span className="date">
-          {r.date} · {fmt(r.duration_s, "s")}
-        </span>
+        <div className="rec-actions">
+          {onSelect && (
+            <button
+              className="select-recording"
+              type="button"
+              aria-pressed={selected}
+              onClick={() => onSelect(r)}
+            >
+              {selected ? "Viewing" : "View"}
+            </button>
+          )}
+          {r.isLocal && onEdit && (
+            <button
+              className="edit-local"
+              type="button"
+              onClick={() => onEdit(r)}
+              title="Edit label and note"
+            >
+              Edit
+            </button>
+          )}
+          {r.isLocal && onDelete && (
+            <button
+              className="delete-local"
+              type="button"
+              onClick={() => onDelete(r)}
+              title="Delete this local recording"
+            >
+              Delete
+            </button>
+          )}
+        </div>
       </div>
       <div className="metrics">
         <div className="chip">
           <b>{fmt(r.pitch.mean_hz)}</b>
-          <span>pitch Hz</span>
+          <span>Pitch Hz</span>
         </div>
         <div className="chip">
           <b>
-            {fmt(r.pitch.min_hz)}–{fmt(r.pitch.max_hz)}
+            {fmt(r.pitch.min_hz)}-{fmt(r.pitch.max_hz)}
           </b>
-          <span>range Hz</span>
+          <span>Range Hz</span>
         </div>
         <div className="chip">
           <b>{fmt(r.formants.f2_hz)}</b>
           <span>F2 Hz</span>
         </div>
         <div className="chip">
-          <b>{fmt(r.intensity.mean_db)}</b>
-          <span>loud dB</span>
+          <b>{fmt(r.register?.in_register_pct, "%")}</b>
+          <span>In register</span>
         </div>
         <div className="chip">
           <b>{fmt(r.pitch.sd_hz)}</b>
-          <span>variab Hz</span>
+          <span>Melody Hz</span>
         </div>
         <div className="chip">
           <b>{fmt(r.voice_quality.hnr_db)}</b>
-          <span>HNR dB</span>
+          <span>Clarity dB</span>
         </div>
       </div>
-      {r.note && <div className="note">📝 {r.note}</div>}
-      {r.audio && (
+      {r.note && <div className="note">{r.note}</div>}
+      {(r.audio || r.audioBlobId) && (
         <WaveformPlayer
           src={r.audio}
+          audioBlobId={r.audioBlobId}
           duration={r.duration_s}
           downloadName={`voice-take-${r.id}`}
         />
       )}
-    </div>
+    </article>
   );
 }

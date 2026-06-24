@@ -1,0 +1,32 @@
+{
+  "name": "@voice-garden/praat-wasm",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Headless Praat WebAssembly spike for Voice Garden browser analysis.",
+  "exports": {
+    ".": {
+      "types": "./src/types.d.ts",
+      "default": "./src/index.js"
+    },
+    "./worker": "./src/worker.js",
+    "./analysisWorkerClient": {
+      "types": "./src/types.d.ts",
+      "default": "./src/analysisWorkerClient.js"
+    }
+  },
+  "types": "./src/types.d.ts",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "smoke:wasm": "node scripts/smoke-wasm.mjs",
+    "smoke:browser": "node scripts/smoke-browser.mjs",
+    "bench": "node scripts/bench.mjs",
+    "fetch:praat": "node scripts/fetch-praat.mjs",
+    "build:praat-libs": "node scripts/build-praat-libs.mjs",
+    "probe:praat-upstream": "node scripts/probe-praat-upstream.mjs",
+    "build:wasm": "node scripts/build-wasm.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
