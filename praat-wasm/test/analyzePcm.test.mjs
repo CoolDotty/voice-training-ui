@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import test from "node:test";
 import { analyzePcm, analyzePcmWithPraat } from "../src/index.js";
+import { normalizeFormants } from "../src/praatWasmAnalyzer.js";
 
 function sine({ hz, seconds = 1, sampleRate = 44100, amp = 0.3 }) {
   const samples = new Float32Array(Math.round(seconds * sampleRate));
@@ -30,6 +31,26 @@ test("analyzePcm marks unsupported Praat-grade metrics as null", () => {
   assert.equal(result.recording.formants.f1_hz, null);
   assert.equal(result.recording.voice_quality.hnr_db, null);
   assert.ok(result.diagnostics.unsupportedMetrics.includes("formants.f2_hz"));
+});
+
+test("normalizeFormants drops suspicious F3 while keeping F1 and F2", () => {
+  assert.deepEqual(normalizeFormants({ f1: 650, f2: 1800, f3: 2900 }), {
+    f1_hz: 650,
+    f2_hz: 1800,
+    f3_hz: 2900,
+  });
+
+  assert.deepEqual(normalizeFormants({ f1: 650, f2: 1800, f3: 3465 }), {
+    f1_hz: 650,
+    f2_hz: 1800,
+    f3_hz: null,
+  });
+
+  assert.deepEqual(normalizeFormants({ f1: 650, f2: 2500, f3: 2600 }), {
+    f1_hz: 650,
+    f2_hz: 2500,
+    f3_hz: null,
+  });
 });
 
 test("analyzePcm reports sub-register time", () => {

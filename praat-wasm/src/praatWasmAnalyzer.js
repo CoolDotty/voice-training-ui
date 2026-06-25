@@ -2,6 +2,9 @@ const PITCH_FLOOR = 75;
 const PITCH_CEILING = 500;
 const DEFAULT_REGISTER_FLOOR = 130;
 const SEMITONE_REF = 100;
+const MIN_RELIABLE_F3_HZ = 1800;
+const MAX_RELIABLE_F3_HZ = 3400;
+const MIN_F3_F2_GAP_HZ = 250;
 
 let modulePromise;
 
@@ -38,6 +41,7 @@ export async function analyzePcmWithPraat(input) {
     range_hz: clean(raw.pitch.max - raw.pitch.min),
     sd_hz: clean(raw.pitch.sd),
   };
+  const formants = normalizeFormants(raw.formants);
   const phrases = segmentPhrases(frames, intensityFrames, registerFloor);
   const register = summarizeRegister(frames, phrases, registerFloor);
   const id = Number.isInteger(input.id) ? Number(input.id) : 0;
@@ -55,11 +59,7 @@ export async function analyzePcmWithPraat(input) {
       detailId,
       duration_s: clean(raw.duration),
       pitch,
-      formants: {
-        f1_hz: clean(raw.formants?.f1),
-        f2_hz: clean(raw.formants?.f2),
-        f3_hz: clean(raw.formants?.f3),
-      },
+      formants,
       voice_quality: {
         hnr_db: clean(raw.voiceQuality?.hnr),
         jitter_pct: clean(raw.voiceQuality?.jitter),
@@ -96,6 +96,27 @@ export async function analyzePcmWithPraat(input) {
       elapsedMs: clean(performanceNow() - started),
     },
   };
+}
+
+export function normalizeFormants(rawFormants) {
+  const f1 = clean(rawFormants?.f1);
+  const f2 = clean(rawFormants?.f2);
+  const f3 = clean(rawFormants?.f3);
+  return {
+    f1_hz: f1,
+    f2_hz: f2,
+    f3_hz: isReliableF3(f2, f3) ? f3 : null,
+  };
+}
+
+function isReliableF3(f2, f3) {
+  return (
+    f2 != null &&
+    f3 != null &&
+    f3 >= MIN_RELIABLE_F3_HZ &&
+    f3 <= MAX_RELIABLE_F3_HZ &&
+    f3 - f2 >= MIN_F3_F2_GAP_HZ
+  );
 }
 
 async function loadPraatModule() {
