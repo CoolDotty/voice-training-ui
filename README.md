@@ -21,6 +21,22 @@ npm run build     # production build → dist/
 npm run preview   # serve the production build
 ```
 
+### Docker
+
+A multi-stage Docker build compiles Praat WASM from source, builds the frontend, and serves it behind Nginx.
+
+```sh
+# With docker compose (recommended)
+docker compose up --build
+# → http://localhost:8080
+
+# With plain docker
+docker build -t voice-garden .
+docker run -p 8080:80 voice-garden
+```
+
+The build pipeline runs all unit tests and the WASM smoke test inside the container.
+
 ## Praat WASM analysis
 
 The `praat-wasm/` package provides a headless Praat WebAssembly build for browser-side voice analysis. It includes a JavaScript PCM fallback analyzer plus a real Praat WASM path that passes mono PCM through Praat's `Sound_to_Pitch`, formant, HNR, jitter/shimmer, and spectral-weight routines. Everything is exposed through a Web Worker with the same result shape consumed by the dashboard.
