@@ -4,7 +4,7 @@
 
 Ship a headless Praat-derived WebAssembly engine for Voice Garden. The browser
 passes mono PCM into a worker and receives the same `Recording` and
-`RecordingDetail` JSON shapes that `analyze.py` currently writes.
+`RecordingDetail` JSON shapes owned by the browser/WASM analyzer path.
 
 This package now has two analysis paths:
 
