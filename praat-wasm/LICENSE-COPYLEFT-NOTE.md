@@ -1,8 +1,8 @@
 # Copyleft note
 
-Voice Garden and this package are licensed under AGPL-3.0-or-later. Praat and
-praat-parselmouth are GPLv3-or-later, and Voice Garden chooses the stronger
-Affero copyleft so network-hosted versions keep source-sharing expectations.
+Voice Garden and this package are licensed under AGPL-3.0-or-later. Praat is
+GPLv3-or-later, and Voice Garden chooses the stronger Affero copyleft so
+network-hosted versions keep source-sharing expectations.
 
 This package does not vendor Praat source or ship a compiled Praat WASM artifact
 by default. If a Praat-derived `.wasm` file is built and distributed with Voice

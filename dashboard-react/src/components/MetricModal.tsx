@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FiVolume2 } from "react-icons/fi";
 import type { Recording, ReferenceVoice } from "../types";
 import type { MetricDef } from "../metrics";
-import { MASC, FEM, fmt } from "../zones";
+import { MASC, FEM, fmt, isReliableF3 } from "../zones";
 import { WaveformPlayer } from "./WaveformPlayer";
 
 interface Props {
@@ -39,6 +39,22 @@ interface Selected {
 }
 
 const clampPct = (p: number) => Math.min(100, Math.max(0, p));
+
+function takeMetricValue(metric: MetricDef, recording: Recording) {
+  const value = metric.take(recording);
+  if (metric.key === "f3" && !isReliableF3(recording.formants.f2_hz, value)) {
+    return null;
+  }
+  return value;
+}
+
+function referenceMetricValue(metric: MetricDef, reference: ReferenceVoice) {
+  const value = metric.ref(reference);
+  if (metric.key === "f3" && !isReliableF3(reference.formants?.f2_hz, value)) {
+    return null;
+  }
+  return value;
+}
 
 // vertical spacing for stacked take markers (px)
 const TAKE_ROW = 22; // height of one stack lane
@@ -111,12 +127,12 @@ export function MetricModal({
     let hi = metric.hi;
     const vals: number[] = [];
     for (const r of recordings) {
-      const v = metric.take(r);
+      const v = takeMetricValue(metric, r);
       if (v != null && isFinite(v)) vals.push(v);
     }
     if (metric.showRefs) {
       for (const ref of references) {
-        const v = metric.ref(ref);
+        const v = referenceMetricValue(metric, ref);
         if (v != null && isFinite(v)) vals.push(v);
       }
     }
@@ -133,7 +149,7 @@ export function MetricModal({
 
   const takeTicks: Tick[] = recordings
     .map((r) => {
-      const v = metric.take(r);
+      const v = takeMetricValue(metric, r);
       if (v == null || !isFinite(v)) return null;
       return {
         v,
@@ -154,7 +170,7 @@ export function MetricModal({
   const refTicks: Tick[] = metric.showRefs
     ? (references
         .map((ref, idx) => {
-          const v = metric.ref(ref);
+          const v = referenceMetricValue(metric, ref);
           if (v == null || !isFinite(v)) return null;
           return {
             v,

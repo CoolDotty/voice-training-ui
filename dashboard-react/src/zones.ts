@@ -56,6 +56,24 @@ export const F3_ZONES: Zone[] = [
   { from: 2700, to: 3400, color: FEM, name: "bright" },
 ];
 
+export const F3_RELIABLE_MIN_HZ = 1800;
+export const F3_RELIABLE_MAX_HZ = 3400;
+export const F3_MIN_F2_GAP_HZ = 250;
+
+export function isReliableF3(f2: number | null | undefined, f3: number | null | undefined): boolean {
+  return (
+    f2 !== null &&
+    f2 !== undefined &&
+    f3 !== null &&
+    f3 !== undefined &&
+    Number.isFinite(f2) &&
+    Number.isFinite(f3) &&
+    f3 >= F3_RELIABLE_MIN_HZ &&
+    f3 <= F3_RELIABLE_MAX_HZ &&
+    f3 - f2 >= F3_MIN_F2_GAP_HZ
+  );
+}
+
 export const LOUD_ZONES: Zone[] = [
   { from: 45, to: 55, color: "#d7d0e8", name: "soft" },
   { from: 55, to: 65, color: "#cdeadd", name: "comfy" },

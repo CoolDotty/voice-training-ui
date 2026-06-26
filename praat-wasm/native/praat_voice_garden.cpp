@@ -30,6 +30,14 @@
 
 namespace {
 
+constexpr double kMinVowelF1Hz = 250.0;
+constexpr double kMaxVowelF1Hz = 1000.0;
+constexpr double kMinReliableF3Hz = 1800.0;
+constexpr double kMaxReliableF3Hz = 3400.0;
+constexpr double kMinF3F2GapHz = 250.0;
+constexpr double kMaxF2FrameJumpHz = 150.0;
+constexpr double kMaxF3FrameJumpHz = 250.0;
+
 void initializePraatRuntime() {
   static bool initialized = false;
   if (initialized) {
@@ -154,6 +162,12 @@ struct FormantRows {
   std::vector<double> f3;
 };
 
+bool reliableF3(double f2, double f3) {
+  return std::isfinite(f2) && std::isfinite(f3) &&
+      f3 >= kMinReliableF3Hz && f3 <= kMaxReliableF3Hz &&
+      f3 - f2 >= kMinF3F2GapHz;
+}
+
 FormantRows measureVowelFormants(Sound sound, const std::vector<double>& candidateTimes, double ceiling) {
   FormantRows out;
   autoFormant formant = Sound_to_Formant_burg(sound, 0.0, 5.0, ceiling, 0.025, 50.0);
@@ -171,21 +185,29 @@ FormantRows measureVowelFormants(Sound sound, const std::vector<double>& candida
     if (!std::isfinite(f1) || !std::isfinite(f2) || !std::isfinite(f3)) {
       continue;
     }
-    if (f1 <= 0.0 || f2 <= 0.0 || f3 <= 0.0 || f1 < 250.0 || f1 > 1000.0) {
+    if (f1 <= 0.0 || f2 <= 0.0 || f1 < kMinVowelF1Hz || f1 > kMaxVowelF1Hz) {
       continue;
     }
     rows.push_back({f1, f2, f3});
   }
 
   double previousF2 = std::numeric_limits<double>::quiet_NaN();
+  double previousF3 = std::numeric_limits<double>::quiet_NaN();
   for (const Row& row : rows) {
-    if (std::isfinite(previousF2) && std::abs(row.f2 - previousF2) > 150.0) {
+    if (std::isfinite(previousF2) && std::abs(row.f2 - previousF2) > kMaxF2FrameJumpHz) {
       previousF2 = row.f2;
       continue;
     }
     out.f1.push_back(row.f1);
     out.f2.push_back(row.f2);
-    out.f3.push_back(row.f3);
+
+    if (reliableF3(row.f2, row.f3) &&
+        (!std::isfinite(previousF3) || std::abs(row.f3 - previousF3) <= kMaxF3FrameJumpHz)) {
+      out.f3.push_back(row.f3);
+      previousF3 = row.f3;
+    } else if (std::isfinite(row.f3)) {
+      previousF3 = row.f3;
+    }
     previousF2 = row.f2;
   }
   return out;

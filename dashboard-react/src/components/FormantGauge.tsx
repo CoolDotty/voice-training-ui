@@ -1,5 +1,5 @@
 import { FiMaximize2 } from "react-icons/fi";
-import { type Zone, zoneOf, fmt } from "../zones";
+import { GROW, type Zone, zoneOf, fmt } from "../zones";
 import { ZoneBar } from "./ZoneBar";
 import type { MetricKey } from "../metrics";
 
@@ -13,6 +13,7 @@ interface Props {
   // when set, the gauge is clickable and opens the reference modal
   metricKey?: MetricKey;
   onExpand?: (key: MetricKey, rect: DOMRect) => void;
+  isReliableValue?: (value: number) => boolean;
 }
 
 export function FormantGauge({
@@ -24,8 +25,11 @@ export function FormantGauge({
   hi,
   metricKey,
   onExpand,
+  isReliableValue,
 }: Props) {
-  const z = zoneOf(zones, value);
+  const hasValue = value !== null && value !== undefined && Number.isFinite(value);
+  const isOutlier = !!(hasValue && isReliableValue && !isReliableValue(value));
+  const z = isOutlier ? null : zoneOf(zones, value);
   const clickable = !!(metricKey && onExpand);
   const open = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!clickable) return;
@@ -61,6 +65,11 @@ export function FormantGauge({
               {z.name}
             </span>
           )}
+          {isOutlier && (
+            <span className="pill" style={{ background: GROW, color: "#5a4566" }}>
+              outlier
+            </span>
+          )}
           {clickable && (
             <span className="fgauge-expand" aria-hidden="true">
               <FiMaximize2 />
@@ -68,7 +77,7 @@ export function FormantGauge({
           )}
         </span>
       </div>
-      <ZoneBar zones={zones} value={value} lo={lo} hi={hi} />
+      <ZoneBar zones={zones} value={isOutlier ? null : value} lo={lo} hi={hi} />
       <div className="fends">
         <span>← deeper / larger tract</span>
         <span>brighter / smaller tract →</span>

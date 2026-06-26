@@ -1,5 +1,13 @@
 import type { Recording } from "../types";
-import { F2_ZONES, F3_ZONES, zoneOf, fmt } from "../zones";
+import {
+  F2_ZONES,
+  F3_RELIABLE_MAX_HZ,
+  F3_RELIABLE_MIN_HZ,
+  F3_ZONES,
+  zoneOf,
+  fmt,
+  isReliableF3,
+} from "../zones";
 import { FormantGauge } from "./FormantGauge";
 import { Note } from "../annotations/AnnotationsProvider";
 import type { MetricKey } from "../metrics";
@@ -12,7 +20,7 @@ interface ResonanceCardProps {
 export function ResonanceCard({ r, onExpand }: ResonanceCardProps) {
   const f = r.formants;
   const z2 = zoneOf(F2_ZONES, f.f2_hz);
-  const z3 = zoneOf(F3_ZONES, f.f3_hz);
+  const z3 = isReliableF3(f.f2_hz, f.f3_hz) ? zoneOf(F3_ZONES, f.f3_hz) : null;
   // overall lean from the two reliable cues (F2, F3)
   const score = [z2, z3].reduce(
     (s, z) => s + (z?.name === "bright" ? 1 : z?.name === "deeper" ? -1 : 0),
@@ -71,6 +79,9 @@ export function ResonanceCard({ r, onExpand }: ResonanceCardProps) {
         hi={3400}
         metricKey="f3"
         onExpand={onExpand}
+        isReliableValue={(value) =>
+          value >= F3_RELIABLE_MIN_HZ && value <= F3_RELIABLE_MAX_HZ
+        }
       />
       <div className="res-summary">
         <Note id="note.resonance">{summary}</Note>
