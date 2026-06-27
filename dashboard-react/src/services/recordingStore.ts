@@ -28,7 +28,7 @@ export function getVoiceGardenDb(): Promise<IDBDatabase> {
 export async function getLocalRecordings(): Promise<Recording[]> {
   const db = await getVoiceGardenDb();
   const recordings = await getAll<Recording>(db, STORES.recordings);
-  return recordings.map((recording) => ({ ...recording, isLocal: true }));
+  return recordings.map((recording) => ({ ...recording, isLocal: recording.isLocal ?? false }));
 }
 
 export async function getRecordingDetail(detailId: string): Promise<RecordingDetail | null> {
@@ -52,7 +52,7 @@ export async function saveRecordingBundle(bundle: SavedBundle): Promise<void> {
     [STORES.recordings, STORES.details, STORES.audioBlobs, STORES.insights],
     "readwrite",
   );
-  tx.objectStore(STORES.recordings).put({ ...bundle.recording, isLocal: true });
+  tx.objectStore(STORES.recordings).put({ ...bundle.recording });
   tx.objectStore(STORES.details).put(bundle.detail, bundle.recording.detailId);
   tx.objectStore(STORES.audioBlobs).put(bundle.audioBlob, bundle.recording.audioBlobId);
   tx.objectStore(STORES.insights).put(bundle.insight);
@@ -88,7 +88,6 @@ export async function updateLocalRecordingMetadata(
     ...recording,
     label: metadata.label,
     note: metadata.note,
-    isLocal: true,
   };
   store.put(updated);
   await transactionDone(tx);

@@ -28,10 +28,10 @@ export function RecordingCard({
               {selected && <span className="rec-badge rec-badge-current">Current</span>}
               {isLatest && <span className="rec-badge">Latest</span>}
               {r.isLocal && <span className="rec-badge rec-badge-local">Browser</span>}
+              {r.audioBlobId && !r.isLocal && <span className="rec-badge rec-badge-file">File</span>}
             </div>
             <span className="date">
               {r.date} - {fmt(r.duration_s, "s")}
-              {!r.isLocal ? " - file" : ""}
             </span>
           </div>
         </div>
@@ -46,7 +46,7 @@ export function RecordingCard({
               {selected ? "Viewing" : "View"}
             </button>
           )}
-          {r.isLocal && onEdit && (
+          {r.audioBlobId && onEdit && (
             <button
               className="edit-local"
               type="button"
@@ -56,12 +56,12 @@ export function RecordingCard({
               Edit
             </button>
           )}
-          {r.isLocal && onDelete && (
+          {r.audioBlobId && onDelete && (
             <button
               className="delete-local"
               type="button"
               onClick={() => onDelete(r)}
-              title="Delete this local recording"
+              title="Delete this recording"
             >
               Delete
             </button>

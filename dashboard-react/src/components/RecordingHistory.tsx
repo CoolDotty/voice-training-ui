@@ -123,7 +123,7 @@ export function RecordingHistory({
             </h3>
             <p>
               {active.date} - {fmt(active.duration_s, "s")}
-              {active.isLocal ? " - browser recording" : " - file recording"}
+              {active.isLocal ? " - browser recording" : active.audioBlobId ? " - uploaded file" : " - file recording"}
             </p>
           </div>
           <div className="history-current-metrics" aria-label="Current recording metrics">

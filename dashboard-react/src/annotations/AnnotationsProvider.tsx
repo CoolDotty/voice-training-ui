@@ -67,7 +67,7 @@ export function AnnotationsProvider({
   }, [recording.detail, recording.detailId, initialDetail]);
 
   useEffect(() => {
-    if (!recording.isLocal) {
+    if (!recording.detailId && !recording.audioBlobId && !recording.detail) {
       setInsight(null);
       return;
     }
@@ -79,7 +79,7 @@ export function AnnotationsProvider({
     return () => {
       alive = false;
     };
-  }, [recording.id, recording.isLocal]);
+  }, [recording.id, recording.detailId, recording.audioBlobId, recording.detail]);
 
   return (
     <AnnCtx.Provider value={{ recording, detail, insight }}>

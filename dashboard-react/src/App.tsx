@@ -127,7 +127,7 @@ export function App() {
 
   const handleDeleteLocal = useCallback(
     async (recording: Recording) => {
-      if (!recording.isLocal) return;
+      if (!recording.audioBlobId && !recording.detailId) return;
       const confirmed = window.confirm(`Delete local take #${recording.id}?`);
       if (!confirmed) return;
       try {
@@ -142,7 +142,7 @@ export function App() {
 
   const handleEditLocal = useCallback(
     async (recording: Recording) => {
-      if (!recording.isLocal) return;
+      if (!recording.audioBlobId && !recording.detailId) return;
       const nextLabel = window.prompt("Label", recording.label);
       if (nextLabel == null) return;
       const nextNote = window.prompt("Note", recording.note);

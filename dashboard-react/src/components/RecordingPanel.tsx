@@ -61,6 +61,9 @@ export function RecordingPanel({ nextId, onSaved }: RecordingPanelProps) {
   const audioContextRef = useRef<AudioContext | null>(null);
   const analysisClientRef = useRef<ReturnType<typeof createAnalysisWorkerClient> | null>(null);
   const analysisCancelledRef = useRef(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [source, setSource] = useState<"record" | "upload">("record");
+  const [uploadFileName, setUploadFileName] = useState<string | null>(null);
 
   const previewUrl = useMemo(() => (blob ? URL.createObjectURL(blob) : null), [blob]);
   const selectedExerciseCategory =
@@ -151,6 +154,22 @@ export function RecordingPanel({ nextId, onSaved }: RecordingPanelProps) {
     stopTimer();
   }
 
+  function handleUploadClick() {
+    fileInputRef.current?.click();
+  }
+
+  function handleFileSelect(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setError(null);
+    setDiagnostic(null);
+    setBlob(file);
+    setSource("upload");
+    setUploadFileName(file.name);
+    setState("ready");
+    event.target.value = "";
+  }
+
   function retake() {
     setBlob(null);
     setState("idle");
@@ -158,6 +177,8 @@ export function RecordingPanel({ nextId, onSaved }: RecordingPanelProps) {
     setLevel(0);
     setError(null);
     setDiagnostic(null);
+    setSource("record");
+    setUploadFileName(null);
   }
 
   function selectExerciseCategory(categoryId: ExerciseCategoryId) {
@@ -216,12 +237,12 @@ export function RecordingPanel({ nextId, onSaved }: RecordingPanelProps) {
         label: label.trim() || defaultLabel(nextId),
         note: exerciseNote,
         date,
-        source_file: "browser-recording",
+        source_file: source === "upload" && uploadFileName ? uploadFileName : "browser-recording",
         audio: null,
         audioBlobId,
         detail: undefined,
         detailId,
-        isLocal: true,
+        isLocal: source !== "upload",
       };
       const insight = createRuleInsight(recording, result.detail, result.diagnostics);
       await saveRecordingBundle({ recording, detail: result.detail, audioBlob: blob, insight });
@@ -355,7 +376,15 @@ export function RecordingPanel({ nextId, onSaved }: RecordingPanelProps) {
             )}
           </div>
         </div>
-        <div className="record-timer">{formatSeconds(elapsed)}</div>
+        <div className="record-timer">
+          {source === "upload" && uploadFileName ? (
+            <span className="upload-filename" title={uploadFileName}>
+              {uploadFileName}
+            </span>
+          ) : (
+            formatSeconds(elapsed)
+          )}
+        </div>
       </div>
 
       <div className="record-fields">
@@ -431,10 +460,23 @@ export function RecordingPanel({ nextId, onSaved }: RecordingPanelProps) {
       )}
 
       <div className="record-actions">
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="audio/*,.mp3,.wav,.ogg,.m4a,.flac,.webm"
+          className="upload-input"
+          onChange={handleFileSelect}
+          aria-label="Upload audio file"
+        />
         {state !== "recording" && !blob && (
-          <button className="record-primary" disabled={state === "analyzing"} onClick={startRecording}>
-            Start recording
-          </button>
+          <>
+            <button className="record-primary" disabled={state === "analyzing"} onClick={startRecording}>
+              Start recording
+            </button>
+            <button disabled={state === "analyzing"} onClick={handleUploadClick}>
+              Upload recording
+            </button>
+          </>
         )}
         {state === "recording" && (
           <button className="record-primary" onClick={stopRecording}>
@@ -452,7 +494,7 @@ export function RecordingPanel({ nextId, onSaved }: RecordingPanelProps) {
               {state === "analyzing" ? "Analyzing" : "Save take"}
             </button>
             <button disabled={state === "analyzing"} onClick={retake}>
-              Record again
+              {source === "upload" ? "Choose another file" : "Record again"}
             </button>
           </>
         )}
