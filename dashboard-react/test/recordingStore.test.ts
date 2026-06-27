@@ -101,4 +101,55 @@ describe("recordingStore", () => {
     expect(await getInsight(501)).toBeNull();
     expect(await getAudioBlob("audio-501")).toBeNull();
   });
+
+  it("preserves isLocal: false through save/load for uploaded files", async () => {
+    const recording: Recording = {
+      id: 502,
+      label: "Upload test",
+      note: "uploaded",
+      date: "2026-06-24",
+      source_file: "my-voice.wav",
+      audio: null,
+      audioBlobId: "audio-502",
+      detailId: "detail-502",
+      isLocal: false,
+      duration_s: 1,
+      pitch: {
+        mean_hz: 170,
+        median_hz: 170,
+        min_hz: 160,
+        max_hz: 180,
+        range_hz: 20,
+        sd_hz: 6,
+      },
+      formants: { f1_hz: null, f2_hz: null, f3_hz: null },
+      voice_quality: { hnr_db: null, jitter_pct: null, shimmer_pct: null },
+      intensity: { mean_db: null, min_db: null, max_db: null },
+    };
+    const detail: RecordingDetail = {
+      register_floor_hz: 130,
+      semitone_ref_hz: 100,
+      duration_s: 1,
+      time_step: 0.01,
+      frames: { t: [0], hz: [170] },
+      phrases: [],
+      summary: { floor_hz: 130, in_register_pct: 100, semitones_sd: 1, in_register_semitones_sd: 1, onset_sub_pct: null, mid_sub_pct: null, offset_sub_pct: null, phrases_landed_pct: null, n_phrases: 0 },
+    };
+    const insight: Insight = {
+      recordingId: recording.id,
+      headline: "Uploaded take",
+      summary: "Imported via file upload.",
+      badges: ["Praat WASM"],
+      primaryIssue: "none",
+      recommendedDrill: "Record again.",
+      createdAt: "2026-06-24T00:00:00.000Z",
+    };
+
+    await saveRecordingBundle({ recording, detail, audioBlob: new Blob(["audio"], { type: "audio/wav" }), insight });
+    const loaded = await getLocalRecordings();
+    expect(loaded).toEqual([expect.objectContaining({ id: 502, isLocal: false })]);
+    expect(await getRecordingDetail("detail-502")).toEqual(detail);
+    expect(await getInsight(502)).toEqual(insight);
+    expect(await getAudioBlob("audio-502")).toBeInstanceOf(Blob);
+  });
 });

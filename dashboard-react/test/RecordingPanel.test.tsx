@@ -161,6 +161,26 @@ describe("RecordingPanel", () => {
     expect(screen.queryByLabelText("Previous exercises")).toBeNull();
   });
 
+  it("renders the upload button alongside the record button", () => {
+    render(<RecordingPanel nextId={10} onSaved={() => undefined} />);
+
+    expect(screen.getByRole("button", { name: "Start recording" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Upload recording" })).toBeTruthy();
+    expect(screen.getByLabelText("Upload audio file")).toBeTruthy();
+  });
+
+  it("accepts an uploaded audio file and reaches ready state", async () => {
+    render(<RecordingPanel nextId={10} onSaved={() => undefined} />);
+
+    const file = new File(["dummy"], "my-voice.wav", { type: "audio/wav" });
+    const input = screen.getByLabelText("Upload audio file") as HTMLInputElement;
+    await userEvent.upload(input, file);
+
+    expect(await screen.findByRole("button", { name: "Save take" })).toBeTruthy();
+    expect(screen.getByText("my-voice.wav")).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Choose another file" })).toBeTruthy();
+  });
+
   it("records, reaches ready state, starts analysis, and supports cancellation", async () => {
     render(<RecordingPanel nextId={10} onSaved={() => undefined} />);
 
